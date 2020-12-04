@@ -48,7 +48,7 @@
                   <div class="widget">
                     <h4 class="widget-title">Tags</h4>
                     <div class="content tagcloud">
-                      {{#get "tags" limit="5" }}
+                      {{#get "tags" limit="4" }}
                       {{#foreach tags}}
                       <a href="{{url}}">{{name}}</a>
                       {{/foreach}}
@@ -56,7 +56,8 @@
                     </div>
                     <h4 class="widget-title">Authors</h4>
                     <div class="content tagcloud">
-                      {{#get "authors" limit="5" }}
+                      {{set.seed(1)}}
+                      {{#get "authors" limit="4" }}
                       {{#foreach authors}}
                       <a href="{{url}}">{{name}}</a>
                       {{/foreach}}
