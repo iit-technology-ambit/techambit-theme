@@ -14,6 +14,10 @@
     {{!-- Styles'n'Scripts --}}
     <link rel="stylesheet" type="text/css" href="{{asset 'built/screen.css'}}" />
     <link rel="stylesheet" type="text/css" href="fonts/fontawesome/css/fontawesome.min.css"/>
+  <script>
+    var pagination_next_page_number       = '{{ pagination.next }}',
+    pagination_available_pages_number = '{{ pagination.pages }}';
+  </script>
 
   {{!-- This tag outputs SEO meta+structured data and other important settings --}}
   {{ghost_head}}
@@ -40,19 +44,27 @@
                     </div>
                   </div>
                 </div>
-                <div class="col-md-5">
+                <div class="col-md-3">
                   <div class="widget">
                     <h4 class="widget-title">Tags</h4>
                     <div class="content tagcloud">
-                      {{#get "tags" limit="all" }}
+                      {{#get "tags" limit="5" }}
                       {{#foreach tags}}
+                      <a href="{{url}}">{{name}}</a>
+                      {{/foreach}}
+                      {{/get}}
+                    </div>
+                    <h4 class="widget-title">Authors</h4>
+                    <div class="content tagcloud">
+                      {{#get "authors" limit="5" }}
+                      {{#foreach authors}}
                       <a href="{{url}}">{{name}}</a>
                       {{/foreach}}
                       {{/get}}
                     </div>
                   </div>
                 </div>
-                <div class="col-md-4">
+                <div class="col-md-2">
                   <div class="widget">
                     <h4 class="widget-title">Follow Us</h4>
                     <div class="content follow-social">
@@ -73,58 +85,65 @@
                     </div>
                   </div>
                 </div>
+                <div class="col-md-4">
+                  <div class="widget">
+                    {{#if @labs.members}}
+                    {{> subscribe-form}}
+                    {{/if}}
+                  </div>
+                </div>
               </div>
             </div>
         </footer>
 
     </div>
+  {{!-- The big email subscribe modal content --}}
+  {{#if @labs.members}}
+  <div class="subscribe-success-message">
+    <a class="subscribe-close" href="javascript:;"></a>
+    You've successfully subscribed to {{@site.title}}!
+  </div>
 
-    {{!-- The big email subscribe modal content --}}
-    {{#if @labs.members}}
-    <div class="subscribe-success-message">
-        <a class="subscribe-close" href="javascript:;"></a>
-        You've successfully subscribed to {{@site.title}}!
+  <div id="subscribe" class="subscribe-overlay">
+    <a class="subscribe-close-overlay" href="#"></a>
+    <a class="subscribe-close-button" href="#"></a>
+    <div class="subscribe-overlay-content">
+      {{#if @site.logo}}
+      <img class="subscribe-overlay-logo" src="{{@site.logo}}" alt="{{@site.title}}" />
+      {{/if}}
+      <div class="subscribe-form">
+        <h1 class="subscribe-overlay-title">Subscribe to {{@site.title}}</h1>
+        <p class="subscribe-overlay-description">Stay up to date! Get all the latest & greatest posts delivered straight to your inbox</p>
+        <form data-members-form="subscribe">
+          <div class="form-group">
+            <input class="subscribe-email" data-members-email="" placeholder="youremail@example.com"
+                autocomplete="false" />
+            <button class="button primary" type="submit">
+              <span class="button-content">Subscribe</span>
+              <span class="button-loader">{{> "icons/loader"}}</span>
+            </button>
+          </div>
+          <div class="message-success">
+            <strong>Great!</strong> Check your inbox and click the link to confirm your subscription.
+          </div>
+          <div class="message-error">
+            Please enter a valid email address!
+          </div>
+        </form>
+      </div>
     </div>
+  </div>
+  {{/if}}
 
-    <div id="subscribe" class="subscribe-overlay">
-        <a class="subscribe-close-overlay" href="#"></a>
-        <a class="subscribe-close-button" href="#"></a>
-        <div class="subscribe-overlay-content">
-            {{#if @site.logo}}
-                <img class="subscribe-overlay-logo" src="{{@site.logo}}" alt="{{@site.title}}" />
-            {{/if}}
-            <div class="subscribe-form">
-                <h1 class="subscribe-overlay-title">Subscribe to {{@site.title}}</h1>
-                <p class="subscribe-overlay-description">Stay up to date! Get all the latest & greatest posts delivered straight to your inbox</p>
-                <form data-members-form="subscribe">
-                    <div class="form-group">
-                        <input class="subscribe-email" data-members-email placeholder="youremail@example.com"
-                            autocomplete="false" />
-                        <button class="button primary" type="submit">
-                            <span class="button-content">Subscribe</span>
-                            <span class="button-loader">{{> "icons/loader"}}</span>
-                        </button>
-                    </div>
-                    <div class="message-success">
-                        <strong>Great!</strong> Check your inbox and click the link to confirm your subscription.
-                    </div>
-                    <div class="message-error">
-                        Please enter a valid email address!
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-    {{/if}}
 
-    {{!-- jQuery, required for fitvids --}}
-    <script
+  {{!-- jQuery, required for fitvids --}}
+  <script
         src="https://code.jquery.com/jquery-3.4.1.min.js"
         integrity="sha256-CSXorXvZcTkaix6Yvo6HppcZGetbYMGWSFlBw8HfCJo="
         crossorigin="anonymous">
     </script>
     {{!-- Fitvids (for responsive video embeds), infinite scroll, floating header, and gallery card support --}}
-    <script src="{{asset "built/casper.js"}}"></script>
+    <!--<script src="{{asset "built/casper.js"}}"></script>-->
 
     {{!-- Scripts for Members subscription --}}
     <script>
